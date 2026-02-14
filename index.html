@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farid | Premium Portfolio</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="bg-music" loop>
+  <source src="takemymind.mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-btn">Play Music 🎵</button>
+
+
+  <header>
+    <nav>
+      <h1 class="logo">Farid.</h1>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+  <div class="hero-content">
+    <h2 class="fade-in">Hi, I'm Farid 👋</h2>
+    <h3 class="fade-in delay-1">Informatics Student & Web Developer</h3>
+    <p class="fade-in delay-2">Building modern & aesthetic websites with clean UI.</p>
+    <button class="fade-in delay-3" onclick="scrollToSection('contact')">Hire Me</button>
+  </div>
+
+  <div class="hero-image fade-in delay-2">
+    <img src="fafarid.jpeg" alt="Farid">
+  </div>
+</section>
+
+
+  <section id="about" class="glass">
+    <h2>About Me</h2>
+    <p>
+      Mahasiswa Informatika yang fokus di front-end development,
+      UI design, dan modern web technology.
+    </p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="cards">
+      <div class="card glass">
+        <h3>E-Commerce</h3>
+        <p>Modern shop website with smooth animation.</p>
+      </div>
+      <div class="card glass">
+        <h3>Landing Page</h3>
+        <p>Startup style landing page with premium design.</p>
+      </div>
+      <div class="card glass">
+        <h3>Gym Tracker</h3>
+        <p>Workout tracking app for daily fitness.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="glass">
+    <h2>Contact Me</h2>
+    <p>Email: farid@email.com</p>
+    <div class="social">
+      <i class="fab fa-instagram"></i>
+      <i class="fab fa-github"></i>
+      <i class="fab fa-linkedin"></i>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Farid.Portfolio</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
