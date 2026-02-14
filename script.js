@@ -69,7 +69,7 @@ function initVisualizer() {
 const controlBtn = document.getElementById("music-control");
 let isPlaying = false;
 
-function fadeOut(audio, duration = 2000) {
+function fadeOut(audio, duration = 800) {
   let step = 0.01;
   let interval = duration * step;
 
@@ -93,3 +93,4 @@ controlBtn.addEventListener("click", () => {
   }
   isPlaying = !isPlaying;
 });
+
