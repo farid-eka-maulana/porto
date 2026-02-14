@@ -1,11 +1,21 @@
 const music = document.getElementById("bg-music");
+const btn = document.getElementById("music-control");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
 
-// Fade in function
-function fadeIn(audio, duration = 3000) {
+let audioContext;
+let analyser;
+let source;
+let animationId;
+
+canvas.width = window.innerWidth;
+canvas.height = 120;
+
+function fadeIn(audio, duration = 2000) {
   audio.volume = 0;
   audio.play();
 
-  let step = 0.01;
+  let step = 0.02;
   let interval = duration * step;
 
   let fade = setInterval(() => {
@@ -17,60 +27,8 @@ function fadeIn(audio, duration = 3000) {
   }, interval);
 }
 
-// Trigger saat klik pertama
-document.addEventListener("click", () => {
-  fadeIn(music);
-  initVisualizer();
-}, { once: true });
-
-
-// ================= VISUALIZER =================
-
-function initVisualizer() {
-  const canvas = document.getElementById("visualizer");
-  const ctx = canvas.getContext("2d");
-
-  canvas.width = window.innerWidth;
-  canvas.height = 120;
-
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const source = audioContext.createMediaElementSource(music);
-  const analyser = audioContext.createAnalyser();
-
-  source.connect(analyser);
-  analyser.connect(audioContext.destination);
-
-  analyser.fftSize = 256;
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = (canvas.width / bufferLength) * 2.5;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      let barHeight = dataArray[i] / 2;
-
-      ctx.fillStyle = "silver";
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
-      x += barWidth + 1;
-    }
-  }
-
-  animate();
-}
-const controlBtn = document.getElementById("music-control");
-let isPlaying = false;
-
-function fadeOut(audio, duration = 800) {
-  let step = 0.01;
+function fadeOut(audio, duration = 500) {
+  let step = 0.02;
   let interval = duration * step;
 
   let fade = setInterval(() => {
@@ -79,18 +37,52 @@ function fadeOut(audio, duration = 800) {
     } else {
       clearInterval(fade);
       audio.pause();
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   }, interval);
 }
 
-controlBtn.addEventListener("click", () => {
-  if (isPlaying) {
-    fadeOut(music);
-    controlBtn.textContent = "Play Music 🎵";
-  } else {
-    fadeIn(music);
-    controlBtn.textContent = "Pause Music ⏸";
+function initVisualizer() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    source = audioContext.createMediaElementSource(music);
+    analyser = audioContext.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+    analyser.fftSize = 256;
   }
-  isPlaying = !isPlaying;
-});
 
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  function animate() {
+    animationId = requestAnimationFrame(animate);
+
+    analyser.getByteFrequencyData(dataArray);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = (canvas.width / bufferLength) * 2.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      let barHeight = dataArray[i] / 2;
+      ctx.fillStyle = "silver";
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      x += barWidth + 1;
+    }
+  }
+
+  animate();
+}
+
+btn.addEventListener("click", () => {
+  if (music.paused) {
+    fadeIn(music);
+    initVisualizer();
+    btn.textContent = "Pause Music ⏸";
+  } else {
+    fadeOut(music);
+    btn.textContent = "Play Music 🎵";
+  }
+});
