@@ -66,3 +66,30 @@ function initVisualizer() {
 
   animate();
 }
+const controlBtn = document.getElementById("music-control");
+let isPlaying = false;
+
+function fadeOut(audio, duration = 2000) {
+  let step = 0.01;
+  let interval = duration * step;
+
+  let fade = setInterval(() => {
+    if (audio.volume > 0) {
+      audio.volume = Math.max(audio.volume - step, 0);
+    } else {
+      clearInterval(fade);
+      audio.pause();
+    }
+  }, interval);
+}
+
+controlBtn.addEventListener("click", () => {
+  if (isPlaying) {
+    fadeOut(music);
+    controlBtn.textContent = "Play Music 🎵";
+  } else {
+    fadeIn(music);
+    controlBtn.textContent = "Pause Music ⏸";
+  }
+  isPlaying = !isPlaying;
+});
