@@ -1,50 +1,68 @@
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({
-    behavior: "smooth"
-  });
+const music = document.getElementById("bg-music");
+
+// Fade in function
+function fadeIn(audio, duration = 3000) {
+  audio.volume = 0;
+  audio.play();
+
+  let step = 0.01;
+  let interval = duration * step;
+
+  let fade = setInterval(() => {
+    if (audio.volume < 1) {
+      audio.volume = Math.min(audio.volume + step, 1);
+    } else {
+      clearInterval(fade);
+    }
+  }, interval);
 }
 
-// HEADER DARK SAAT SCROLL
-window.addEventListener("scroll", function() {
-  document.querySelector("header").style.background =
-    window.scrollY > 50 ? "rgba(0,0,0,0.9)" : "rgba(0,0,0,0.6)";
-});
+// Trigger saat klik pertama
+document.addEventListener("click", () => {
+  fadeIn(music);
+  initVisualizer();
+}, { once: true });
 
-// SCROLL REVEAL EFFECT
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
+
+// ================= VISUALIZER =================
+
+function initVisualizer() {
+  const canvas = document.getElementById("visualizer");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = 120;
+
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioContext.createMediaElementSource(music);
+  const analyser = audioContext.createAnalyser();
+
+  source.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  analyser.fftSize = 256;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = (canvas.width / bufferLength) * 2.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      let barHeight = dataArray[i] / 2;
+
+      ctx.fillStyle = "silver";
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+      x += barWidth + 1;
     }
-  });
-});
-
-document.querySelectorAll(".glass").forEach(el => {
-  el.style.opacity = "0";
-  el.style.transform = "translateY(40px)";
-  el.style.transition = "1s";
-  observer.observe(el);
-});
-
-document.addEventListener("scroll", () => {
-  document.querySelectorAll(".glass").forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-    }
-  });
-});
-
-const music = document.getElementById("bg-music");
-const btn = document.getElementById("music-btn");
-
-btn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-    btn.textContent = "Pause Music ⏸";
-  } else {
-    music.pause();
-    btn.textContent = "Play Music 🎵";
   }
-});
 
+  animate();
+}
