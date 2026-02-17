@@ -5,25 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farid | Premium Portfolio</title>
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <audio id="bg-music" loop>
-  <source src="takemymind.mp3" type="audio/mpeg">
-</audio>
 
-<canvas id="visualizer"></canvas>
+  <!-- Background Music -->
+  <audio id="bg-music" loop preload="auto" playsinline>
+    <source src="takemymind.mp3" type="audio/mpeg">
+  </audio>
 
-<button id="music-control">Play Music 🎵</button>
-
-
-
+  <canvas id="visualizer"></canvas>
+  <button id="music-control" class="music-btn">Play Music 🎵</button>
 
   <header>
     <nav>
@@ -38,25 +32,20 @@
   </header>
 
   <section id="home" class="hero">
-  <div class="hero-content">
-    <h2 class="fade-in">Hi, I'm Farid 👋</h2>
-    <h3 class="fade-in delay-1">Informatics Student & Web Developer</h3>
-    <p class="fade-in delay-2">Building modern & aesthetic websites with clean UI.</p>
-    <button class="fade-in delay-3" onclick="scrollToSection('contact')">Hire Me</button>
-  </div>
-
-  <div class="hero-image fade-in delay-2">
-    <img src="fafarid.jpeg" alt="Farid">
-  </div>
-</section>
-
+    <div class="hero-content">
+      <h2>Hi, I'm Farid 👋</h2>
+      <h3>Informatics Student & Web Developer</h3>
+      <p>Building modern & aesthetic websites with clean UI.</p>
+      <button onclick="scrollToSection('contact')">Hire Me</button>
+    </div>
+    <div class="hero-image">
+      <img src="fafarid.jpeg" alt="Farid">
+    </div>
+  </section>
 
   <section id="about" class="glass">
     <h2>About Me</h2>
-    <p>
-      Mahasiswa Informatika yang fokus di front-end development,
-      UI design, dan modern web technology.
-    </p>
+    <p>Mahasiswa Informatika yang fokus di front-end development dan modern UI.</p>
   </section>
 
   <section id="projects">
@@ -80,76 +69,30 @@
   <section id="contact" class="glass">
     <h2>Contact Me</h2>
     <p>Email: farid@email.com</p>
-    <div class="social">
-      <i class="fab fa-instagram"></i>
-      <i class="fab fa-github"></i>
-      <i class="fab fa-linkedin"></i>
+  </section>
+
+  <!-- ⭐ Rating Section -->
+  <section class="rating glass">
+    <h2>Rate Website Ini ⭐</h2>
+
+    <input type="text" id="nama" placeholder="Nama kamu">
+    <textarea id="ulasan" placeholder="Tulis ulasan"></textarea>
+
+    <div class="stars">
+      <label><input type="radio" name="rating" value="1"> ⭐</label>
+      <label><input type="radio" name="rating" value="2"> ⭐⭐</label>
+      <label><input type="radio" name="rating" value="3"> ⭐⭐⭐</label>
+      <label><input type="radio" name="rating" value="4"> ⭐⭐⭐⭐</label>
+      <label><input type="radio" name="rating" value="5"> ⭐⭐⭐⭐⭐</label>
     </div>
+
+    <button onclick="kirimRating()">Kirim Rating</button>
   </section>
 
   <footer>
-    <p>© 2026 Farid.Portfolio</p>
+    <p>© 2026 Farid Portfolio</p>
   </footer>
 
   <script src="script.js"></script>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "APIKEY_KAMU",
-    authDomain: "farid-portfolio-rating.firebaseapp.com",
-    projectId: "farid-portfolio-rating",
-    storageBucket: "farid-portfolio-rating.firebasestorage.app",
-    messagingSenderId: "152274462593",
-    appId: "1:152274462593:web:aed85f3675f5c34f2dea80"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.kirimRating = async function () {
-    const nama = document.getElementById("nama").value;
-    const ulasan = document.getElementById("ulasan").value;
-    const rating = document.querySelector('input[name="rating"]:checked')?.value;
-
-    if (!nama || !ulasan || !rating) {
-      alert("Isi semua dulu bro 🔥");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "ratings"), {
-        nama,
-        ulasan,
-        rating,
-        created: new Date()
-      });
-
-      alert("Rating berhasil dikirim 😎");
-    } catch (error) {
-      console.error(error);
-      alert("Terjadi error");
-    }
-  };
-</script>
-
-<section>
-  <h2>Rate Website Ini ⭐</h2>
-
-  <input type="text" id="nama" placeholder="Nama kamu"><br><br>
-
-  <textarea id="ulasan" placeholder="Tulis ulasan"></textarea><br><br>
-
-  <label><input type="radio" name="rating" value="1"> ⭐</label>
-  <label><input type="radio" name="rating" value="2"> ⭐⭐</label>
-  <label><input type="radio" name="rating" value="3"> ⭐⭐⭐</label>
-  <label><input type="radio" name="rating" value="4"> ⭐⭐⭐⭐</label>
-  <label><input type="radio" name="rating" value="5"> ⭐⭐⭐⭐⭐</label>
-
-  <br><br>
-  <button onclick="kirimRating()">Kirim Rating</button>
-</section>
-
 </body>
 </html>
