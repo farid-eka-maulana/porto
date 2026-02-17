@@ -94,5 +94,15 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+  function adjustMobileHeight() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  adjustMobileHeight();
+  window.addEventListener('resize', adjustMobileHeight);
+</script>
 </body>
 </html>
+
