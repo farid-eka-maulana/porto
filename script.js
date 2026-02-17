@@ -76,13 +76,34 @@ function initVisualizer() {
   animate();
 }
 
-btn.addEventListener("click", () => {
-  if (music.paused) {
-    fadeIn(music);
-    initVisualizer();
-    btn.textContent = "Pause Music ⏸";
-  } else {
-    fadeOut(music);
-    btn.textContent = "Play Music 🎵";
+btn.addEventListener("click", async () => {
+  try {
+    if (music.paused) {
+
+      // Init audio context kalau belum ada
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        source = audioContext.createMediaElementSource(music);
+        analyser = audioContext.createAnalyser();
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+        analyser.fftSize = 256;
+      }
+
+      // WAJIB untuk mobile
+      if (audioContext.state === "suspended") {
+        await audioContext.resume();  
+      }
+
+      fadeIn(music);
+      initVisualizer();
+      btn.textContent = "Pause Music ⏸";
+
+    } else {
+      fadeOut(music);
+      btn.textContent = "Play Music 🎵";
+    }
+  } catch (err) {
+    console.log("Error audio:", err);
   }
 });
