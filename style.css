@@ -268,3 +268,29 @@ footer {
     flex-direction: column;
   }
 }
+
+section {
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+
+#contact {
+  padding-bottom: 140px;
+}
+
+
+body {
+  padding-top: 90px;
+}
+
+
+@media (max-width: 768px) {
+  section {
+    padding: 120px 25px;
+  }
+
+  #contact {
+    padding-bottom: 180px;
+  }
+}
+
