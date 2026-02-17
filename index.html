@@ -79,7 +79,7 @@
 
   <section id="contact" class="glass">
     <h2>Contact Me</h2>
-    <p>Email: farideka111@email.com</p>
+    <p>Email: farid@email.com</p>
     <div class="social">
       <i class="fab fa-instagram"></i>
       <i class="fab fa-github"></i>
@@ -92,6 +92,64 @@
   </footer>
 
   <script src="script.js"></script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "APIKEY_KAMU",
+    authDomain: "farid-portfolio-rating.firebaseapp.com",
+    projectId: "farid-portfolio-rating",
+    storageBucket: "farid-portfolio-rating.firebasestorage.app",
+    messagingSenderId: "152274462593",
+    appId: "1:152274462593:web:aed85f3675f5c34f2dea80"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.kirimRating = async function () {
+    const nama = document.getElementById("nama").value;
+    const ulasan = document.getElementById("ulasan").value;
+    const rating = document.querySelector('input[name="rating"]:checked')?.value;
+
+    if (!nama || !ulasan || !rating) {
+      alert("Isi semua dulu bro 🔥");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "ratings"), {
+        nama,
+        ulasan,
+        rating,
+        created: new Date()
+      });
+
+      alert("Rating berhasil dikirim 😎");
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi error");
+    }
+  };
+</script>
+
+<section>
+  <h2>Rate Website Ini ⭐</h2>
+
+  <input type="text" id="nama" placeholder="Nama kamu"><br><br>
+
+  <textarea id="ulasan" placeholder="Tulis ulasan"></textarea><br><br>
+
+  <label><input type="radio" name="rating" value="1"> ⭐</label>
+  <label><input type="radio" name="rating" value="2"> ⭐⭐</label>
+  <label><input type="radio" name="rating" value="3"> ⭐⭐⭐</label>
+  <label><input type="radio" name="rating" value="4"> ⭐⭐⭐⭐</label>
+  <label><input type="radio" name="rating" value="5"> ⭐⭐⭐⭐⭐</label>
+
+  <br><br>
+  <button onclick="kirimRating()">Kirim Rating</button>
+</section>
+
 </body>
 </html>
-
