@@ -1,86 +1,85 @@
-const music = document.getElementById("bg-music");
-const btn = document.getElementById("music-control");
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
+// ===================== CURSOR =====================
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
 
-let audioContext = null;
-let analyser = null;
-let source = null;
-let animationId = null;
-
-canvas.width = window.innerWidth;
-canvas.height = 120;
-
-// Resize biar responsif
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
 });
 
-// Buat Audio System SEKALI SAJA
-function setupAudio() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
+(function anim() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(anim);
+})();
 
-    source = audioContext.createMediaElementSource(music);
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
-  }
-}
+document.querySelectorAll('a, button, .star, .pcard, .chip').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hov'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hov'));
+});
 
-// Visualizer
-function startVisualizer() {
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
+// ===================== NAVBAR SCROLL =====================
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50);
+});
 
-  function animate() {
-    animationId = requestAnimationFrame(animate);
+// ===================== TYPING EFFECT =====================
+const words = ['Developer.', 'Designer.', 'Creator.'];
+let wi = 0, ci = 0, del = false;
+const tel = document.getElementById('typed');
 
-    analyser.getByteFrequencyData(dataArray);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = (canvas.width / bufferLength) * 2.5;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] / 2;
-      ctx.fillStyle = "silver";
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-      x += barWidth + 1;
-    }
-  }
-
-  animate();
-}
-
-// Stop visualizer
-function stopVisualizer() {
-  cancelAnimationFrame(animationId);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-// BUTTON CONTROL
-btn.addEventListener("click", async () => {
-
-  setupAudio();
-
-  // FIX WAJIB UNTUK HP
-  if (audioContext.state === "suspended") {
-    await audioContext.resume();
-  }
-
-  if (music.paused) {
-    try {
-      await music.play();
-      startVisualizer();
-      btn.textContent = "Pause Music ⏸";
-    } catch (err) {
-      console.log("Play error:", err);
-    }
+function type() {
+  const w = words[wi];
+  if (!del) {
+    tel.textContent = w.slice(0, ++ci);
+    if (ci === w.length) { del = true; setTimeout(type, 1500); return; }
   } else {
-    music.pause();
-    stopVisualizer();
-    btn.textContent = "Play Music 🎵";
+    tel.textContent = w.slice(0, --ci);
+    if (ci === 0) { del = false; wi = (wi + 1) % words.length; }
   }
+  setTimeout(type, del ? 60 : 100);
+}
+setTimeout(type, 1200);
+
+// ===================== SCROLL REVEAL =====================
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+// ===================== MUSIC =====================
+function toggleMusic() {
+  const a = document.getElementById('bgAudio');
+  const b = document.getElementById('mBtn');
+  const l = document.getElementById('mLabel');
+  if (a.paused) {
+    a.play()
+      .then(() => { b.classList.add('playing'); l.textContent = 'Pause'; })
+      .catch(() => { l.textContent = 'No file'; });
+  } else {
+    a.pause();
+    b.classList.remove('playing');
+    l.textContent = 'Play Music';
+  }
+}
+
+// ===================== STAR RATING =====================
+let sel = 0;
+const stars = document.querySelectorAll('.star');
+stars.forEach(s => {
+  s.addEventListener('mouseenter', () => {
+    stars.forEach(st => st.classList.toggle('on', +st.dataset.v <= +s.dataset.v));
+  });
+  s.addEventListener('mouseleave', () => {
+    stars.forEach(st => st.classList.toggle('on', +st.dataset.v <= sel));
+  });
+  s.addEventListener('click', () => {
+    sel = +s.dataset.v;
+    stars.forEach(st => st.classList.toggle('on', +st.dataset.v <= sel));
+  });
+});
+document.getElementById('rBtn').addEventListener('click', () => {
+  alert(sel ? `Makasih rating ${sel} bintangnya! ⭐` : 'Pilih bintang dulu ya!');
 });
