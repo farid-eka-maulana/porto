@@ -1,100 +1,172 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farid | Premium Portfolio</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Farid - Informatics Student & Front-End Developer"/>
+  <title>Farid — Portfolio</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
 
-  <!-- Background Music -->
-  <audio id="bg-music" loop preload="auto" playsinline>
-    <source src="takemymind.mp3" type="audio/mpeg">
-  </audio>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
 
-  <canvas id="visualizer"></canvas>
-  <button id="music-control" class="music-btn">Play Music 🎵</button>
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Farid<span>.</span></div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="music-btn" id="mBtn" onclick="toggleMusic()">
+      <div class="bars"><span></span><span></span><span></span><span></span></div>
+      <span id="mLabel">Play Music</span>
+    </button>
+  </div>
+  <audio id="bgAudio" loop><source src="Mrs.Officer.mp3" type="audio/mpeg"/></audio>
+</nav>
 
-  <header>
-    <nav>
-      <h1 class="logo">Farid.</h1>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <h2>Hi, I'm Farid 👋</h2>
-      <h3>Informatics Student & Web Developer</h3>
-      <p>Building modern & aesthetic websites with clean UI.</p>
-      <button onclick="scrollToSection('contact')">Hire Me</button>
-    </div>
-    <div class="hero-image">
-      <img src="fafarid.jpeg" alt="Farid">
-    </div>
-  </section>
-
-  <section id="about" class="glass">
-    <h2>About Me</h2>
-    <p>Mahasiswa Informatika yang fokus di front-end development dan modern UI.</p>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="cards">
-      <div class="card glass">
-        <h3>E-Commerce</h3>
-        <p>Modern shop website with smooth animation.</p>
+<!-- HERO -->
+<section id="home">
+  <div class="hero-wrap">
+    <div>
+      <p class="hero-label">✦ Available for work</p>
+      <h1 class="hero-title">Hi, I'm<br><span class="acc">Farid</span><br><span id="typed" class="typing"></span></h1>
+      <p class="hero-sub">Mahasiswa Informatika semester 4 yang fokus membangun website modern, bersih, dan fungsional. Mengutamakan estetika tanpa mengorbankan performa.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-p">Lihat Projects →</a>
+        <a href="#contact" class="btn btn-o">Hubungi Saya</a>
       </div>
-      <div class="card glass">
-        <h3>Landing Page</h3>
-        <p>Startup style landing page with premium design.</p>
-      </div>
-      <div class="card glass">
-        <h3>Gym Tracker</h3>
-        <p>Workout tracking app for daily fitness.</p>
+      <div class="stats-row">
+        <div><div class="stat-num">3+</div><div class="stat-label">Projects</div></div>
+        <div><div class="stat-num">4th</div><div class="stat-label">Semester</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-label">Semangat</div></div>
       </div>
     </div>
-  </section>
-
-  <section id="contact" class="glass">
-    <h2>Contact Me</h2>
-    <p>Email: farid@email.com</p>
-  </section>
-
-  <!-- ⭐ Rating Section -->
-  <section class="rating glass">
-    <h2>Rate Website Ini ⭐</h2>
-
-    <input type="text" id="nama" placeholder="Nama kamu">
-    <textarea id="ulasan" placeholder="Tulis ulasan"></textarea>
-
-    <div class="stars">
-      <label><input type="radio" name="rating" value="1"> ⭐</label>
-      <label><input type="radio" name="rating" value="2"> ⭐⭐</label>
-      <label><input type="radio" name="rating" value="3"> ⭐⭐⭐</label>
-      <label><input type="radio" name="rating" value="4"> ⭐⭐⭐⭐</label>
-      <label><input type="radio" name="rating" value="5"> ⭐⭐⭐⭐⭐</label>
+    <div class="hero-img-wrap">
+      <div class="img-frame">
+        <img src="fafarid.jpeg" alt="Farid" onerror="this.style.display='none'; document.getElementById('nophoto').style.display='flex';"/>
+        <div class="no-img" id="nophoto" style="display:none;">F.</div>
+        <div class="img-tag">📍 Indonesia</div>
+      </div>
     </div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-    <button onclick="kirimRating()">Kirim Rating</button>
-  </section>
+<!-- ABOUT -->
+<section id="about">
+  <div class="inner">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="stag">// about me</p>
+        <h2 class="stitle">Tentang<br>Saya</h2>
+        <div class="about-text">
+          <p>Saya <strong>Farid</strong>, mahasiswa Informatika semester 4 yang passionate di bidang <strong>front-end development</strong> dan modern UI design.</p>
+          <p>Saya percaya bahwa website yang baik bukan hanya yang berjalan dengan benar, tapi juga yang <strong>terasa menyenangkan</strong> untuk digunakan.</p>
+          <p>Saat ini saya aktif belajar dan membangun project untuk mengasah skill serta membangun portofolio yang solid.</p>
+        </div>
+        <a href="#" class="btn btn-o" style="margin-top:2rem;display:inline-flex;">Download CV ↓</a>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s;">
+        <p class="stag" style="margin-bottom:1.2rem;">// tech stack</p>
+        <div class="skills-grid">
+          <div class="chip"><span class="dot"></span>HTML5</div>
+          <div class="chip"><span class="dot"></span>CSS3</div>
+          <div class="chip"><span class="dot"></span>JavaScript</div>
+          <div class="chip"><span class="dot"></span>React</div>
+          <div class="chip"><span class="dot"></span>Tailwind CSS</div>
+          <div class="chip"><span class="dot"></span>Bootstrap</div>
+          <div class="chip"><span class="dot"></span>Git & GitHub</div>
+          <div class="chip"><span class="dot"></span>Figma</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <p>© 2026 Farid Portfolio</p>
-  </footer>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="inner">
+    <p class="stag reveal">// projects</p>
+    <h2 class="stitle reveal">Karya<br>Saya</h2>
+    <div class="proj-grid">
+      <div class="pcard reveal">
+        <div class="pnum">01</div>
+        <div class="pname">E-Commerce</div>
+        <div class="pdesc">Modern shop website with smooth animation dan UI yang clean. Dibangun dengan perhatian penuh pada user experience.</div>
+        <div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JavaScript</span></div>
+        <div class="plinks"><a href="#" class="plink">↗ Live Demo</a><a href="#" class="plink">⌥ GitHub</a></div>
+      </div>
+      <div class="pcard reveal" style="transition-delay:0.15s;">
+        <div class="pnum">02</div>
+        <div class="pname">Landing Page</div>
+        <div class="pdesc">Startup style landing page dengan premium design. Fokus pada konversi dan visual yang kuat.</div>
+        <div class="ptags"><span class="ptag">React</span><span class="ptag">Tailwind</span></div>
+        <div class="plinks"><a href="#" class="plink">↗ Live Demo</a><a href="#" class="plink">⌥ GitHub</a></div>
+      </div>
+      <div class="pcard reveal" style="transition-delay:0.3s;">
+        <div class="pnum">03</div>
+        <div class="pname">Gym Tracker</div>
+        <div class="pdesc">Workout tracking app untuk daily fitness. Fitur logging, progress chart, dan reminder harian.</div>
+        <div class="ptags"><span class="ptag">JavaScript</span><span class="ptag">CSS</span></div>
+        <div class="plinks"><a href="#" class="plink">↗ Live Demo</a><a href="#" class="plink">⌥ GitHub</a></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<!-- CONTACT -->
+<section id="contact">
+  <div class="inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="stag">// contact</p>
+        <div class="contact-big">Let's Work<br><span>Together</span></div>
+        <p class="contact-desc">Punya project menarik atau mau kolaborasi? Jangan ragu buat reach out!</p>
+        <div class="clinks">
+          <a href="mailto:farid@email.com" class="clink">✉ farid1@email.com</a>
+          <a href="https://github.com" target="_blank" class="clink">⌥ github.com/farid1</a>
+          <a href="https://linkedin.com" target="_blank" class="clink">◈ linkedin.com/in/farid1</a>
+        </div>
+        <div class="rating-box">
+          <div class="rating-title">Rate website ini ⭐</div>
+          <div class="stars" id="stars">
+            <span class="star" data-v="1">★</span>
+            <span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span>
+            <span class="star" data-v="4">★</span>
+            <span class="star" data-v="5">★</span>
+          </div>
+          <button class="rate-btn" id="rBtn">Kirim Rating</button>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s;">
+        <p class="stag" style="margin-bottom:1.2rem;">// send message</p>
+        <div class="cform">
+          <div class="fgroup"><label class="flabel">Nama</label><input type="text" class="finput" placeholder="John Doe"/></div>
+          <div class="fgroup"><label class="flabel">Email</label><input type="email" class="finput" placeholder="john@email.com"/></div>
+          <div class="fgroup"><label class="flabel">Pesan</label><textarea class="ftextarea" placeholder="Hei Farid, saya mau..."></textarea></div>
+          <button class="fbtn">Kirim Pesan →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">Farid<span>.</span></div>
+  <div class="ftext">©2026 </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
-
-
